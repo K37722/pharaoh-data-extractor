@@ -1,91 +1,64 @@
+cat > CLAUDE.md << 'EOF'
 # CLAUDE CODE WORKING RULES
 
-## CRITICAL: ALWAYS ASK BEFORE GUESSING
-- Never assume file locations, file formats, or directory structures
-- Always request command output before writing code
-- One step at a time - wait for confirmation
+Read this file to understand HOW to work with me. 
+The WHAT to build will be provided in the conversation.
 
-## INFORMATION GATHERING FIRST
-Before writing ANY code, you MUST ask for information:
-- "Run this command and send me the output: [command]"
-- "What do you see when you run: ls -la [directory]"
-- "Run: file [filepath] - what is the file type?"
+## CRITICAL: ONLY ASK WHEN YOU NEED INFORMATION
 
-NEVER guess. ALWAYS ask.
+- **If you already have the information** (from our conversation or context) → proceed with code
+- **If you're missing information** (file paths, formats, structure) → ask for it first
+- Never guess or assume - but don't ask for things you already know
 
-### MULTIPLE QUERY COMMANDS
-IF you need multiple pieces of information before continuing, you CAN combine them:
-
-Example:
-```bash
-# Run all these commands and send me ALL outputs:
-
-# 1. Find game directory
-find ~/Library -name "*Pharaoh*" -type d 2>/dev/null | pbcopy && pbpaste
-
-# 2. Check Python version
-python3 --version | pbcopy && pbpaste
-
-# 3. List game files
-ls -la [game-directory] | pbcopy && pbpaste
-```
-
-This way I get all information needed in one round.
-
-### AUTO-COPY TO CLIPBOARD (Mac)
-Add `| pbcopy && pbpaste` to commands so output is automatically copied:
-```bash
-# Without auto-copy:
-git status
-
-# With auto-copy (PREFERRED):
-git status | pbcopy && pbpaste
-```
-
-The `pbcopy` copies to clipboard, `pbpaste` shows output in terminal.
-You can then just Cmd+V to paste the result.
+**Examples:**
+- ✅ I told you the game path → use it, don't ask again
+- ✅ You saw the directory structure → use it in your code
+- ❌ You don't know the file format → ask me to check it
+- ❌ You're not sure if a directory exists → ask me to verify
 
 ## SYNC BETWEEN CLAUDE CODE WEB AND LOCAL ENVIRONMENT
 
-### CRITICAL: When Claude Code creates/modifies files
-You MUST provide commands to sync changes to local environment:
+### Claude Code works in BRANCHES
+You create a branch like: `claude/feature-name-[id]`
+
+When you create/modify files, provide commands to sync to my local:
 ```bash
-# 1. Pull changes from Claude Code to local
-git pull origin main
+# 1. Fetch all branches
+git fetch origin | pbcopy && pbpaste
 
-# 2. Verify what changed
-git log -1 --stat | pbcopy && pbpaste
+# 2. Checkout your branch (replace with actual branch name)
+git checkout claude/[your-branch-name]
 
-# 3. Open in local IDE (Cursor)
+# 3. Pull latest changes
+git pull | pbcopy && pbpaste
+
+# 4. Open in Cursor
 cursor .
-# OR
-code .
 ```
 
-### WORKFLOW: Claude Code → Local → Test → Push
+**IMPORTANT:** Always tell me your branch name so I can checkout the right branch!
 
-**After Claude Code makes changes:**
+## INFORMATION GATHERING
+
+### Combine multiple query commands when possible:
+Instead of asking 5 separate times, combine into one block:
 ```bash
-# Step 1: Sync from Claude Code to local
-git pull origin main | pbcopy && pbpaste
+{
+echo "=== COMMAND 1 ===" && [command1] && \
+echo -e "\n=== COMMAND 2 ===" && [command2] && \
+echo -e "\n=== COMMAND 3 ===" && [command3]
+} | tee >(pbcopy)
+```
 
-# Step 2: Review changes
-git diff HEAD~1 | pbcopy && pbpaste
-
-# Step 3: Open in Cursor to review
-cursor .
-
-# Step 4: Test locally
-python3 explore.py | pbcopy && pbpaste
-
-# Step 5: If changes needed, commit from local
-git add .
-git commit -m "[description]"
-git push origin main | pbcopy && pbpaste
+### Always use pbcopy for Mac clipboard:
+```bash
+# Auto-copy output to clipboard
+command | pbcopy && pbpaste
 ```
 
 ## CODE DELIVERY FORMAT
-Every time you write code, you MUST provide:
+
+Every time you write code, provide:
 
 📝 WHAT WE'RE BUILDING:
 [Brief explanation]
@@ -95,61 +68,81 @@ Every time you write code, you MUST provide:
 
 🔄 SYNC COMMANDS (run FIRST):
 ```bash
-# Pull Claude Code changes to local
-git pull origin main | pbcopy && pbpaste
+# My branch: claude/[branch-name]
+
+# Fetch and checkout my branch
+git fetch origin
+git checkout claude/[branch-name]
+git pull | pbcopy && pbpaste
 
 # Open in Cursor
 cursor .
 ```
 
-✅ TEST COMMANDS (run in exact order):
+✅ TEST COMMANDS (run in local terminal):
+```bash
 1️⃣ pwd
-2️⃣ python3 [script].py | pbcopy && pbpaste
-3️⃣ Expected output: [describe]
+2️⃣ python3 script.py | pbcopy && pbpaste
+```
 
-📊 GIT COMMANDS (if you made local changes):
+Expected output: [describe]
+
+📊 AFTER TESTING - Check status:
 ```bash
 git status | pbcopy && pbpaste
-# [wait for analysis]
-git add [files]
-git commit -m "[message]"
-git push origin main | pbcopy && pbpaste
+# [send me output]
 ```
 
 ⏸️ STOP HERE - Wait for results
 
 ## GIT STATUS ANALYSIS
-When user sends git status output:
-1. Analyze what changed
-2. Explain the changes
-3. Provide specific git commands WITH pbcopy:
+
+When I send git status output from your branch:
+
+**If changes look good:**
 ```bash
-# Add files
-git add [specific files]
-
-# Commit with descriptive message
-git commit -m "[descriptive message]"
-
-# Push to main
+# Merge your branch to main
+git checkout main
+git merge claude/[branch-name] | pbcopy && pbpaste
 git push origin main | pbcopy && pbpaste
 ```
 
-## WORKFLOW
-1. Ask for information (never assume)
-   - Can combine multiple query commands if needed
-   - Always use | pbcopy && pbpaste for easy copying
-2. Wait for output
-3. Write code based on ACTUAL data (in Claude Code web)
-4. **PROVIDE SYNC COMMANDS** (git pull to get changes locally)
-5. Provide test commands (with pbcopy)
-6. Wait for results
-7. If local changes made: analyze git status
-8. Provide git commands (with pbcopy)
-9. Repeat
+**If I made local changes:**
+```bash
+git add [specific files]
+git commit -m "[descriptive message]"
+git push origin claude/[branch-name] | pbcopy && pbpaste
+```
+
+## COMPLETE WORKFLOW
+
+1. I ask you to build something
+2. You create a branch: `claude/feature-name-[id]`
+3. **You tell me the branch name**
+4. You write code in that branch
+5. **You give me commands to checkout your branch**
+6. I fetch, checkout, and pull your branch
+7. I review in Cursor and test in terminal
+8. I send you git status
+9. If good → I merge to main
+10. If changes needed → I push to your branch
+11. Repeat
 
 ## KEY ENVIRONMENTS
-- **Claude Code Web**: Where you write code
-- **Local Mac Terminal (Oh My Zsh)**: Where user tests
-- **Local IDE (Cursor)**: Where user reviews code
 
-Always provide commands to sync between these environments!
+- **Claude Code Web**: Where you write code (in branches)
+- **Local Mac Terminal (Oh My Zsh)**: Where I test
+- **Cursor IDE**: Where I review code
+
+## BRANCH NAMING
+
+You typically create branches like:
+- `claude/feature-name-[random-id]`
+- Example: `claude/pharaoh-data-extractor-mvp-011CV25wL5rXTGxK7HPJFx7c`
+
+Always tell me the full branch name!
+
+---
+
+*This file contains only HOW to work. The WHAT to build is in the conversation.*
+EOF
