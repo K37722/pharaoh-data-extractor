@@ -124,7 +124,12 @@ class PFH5Reader:
                 if pos >= len(file_index_data):
                     break
 
-                # Read null-terminated file path (comes FIRST in actual format)
+                # Skip prefix byte (always 0x00)
+                pos += 1
+                if pos >= len(file_index_data):
+                    break
+
+                # Read null-terminated file path
                 path_end = file_index_data.find(b'\x00', pos)
                 if path_end == -1:
                     break
