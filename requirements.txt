@@ -1,0 +1,8 @@
+# Total War PHARAOH Data Extractor Requirements
+
+# Web scraping
+requests>=2.31.0
+beautifulsoup4>=4.12.0
+
+# Optional: faster HTML parsing
+lxml>=4.9.0
