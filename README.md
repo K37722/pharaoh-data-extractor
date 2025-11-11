@@ -52,12 +52,18 @@ Located in: `/TotalWarPharaohDynastiesData/data/`
 
 ### Tools
 - `pack_files_manager.py` - Manage and list pack files by category/language
-- `pack_extractor.py` - Extract and search data from pack files
+- `pack_extractor.py` - Extract and search data from pack files (requires RPFM)
 - `quick_search.py` - Interactive guide to find specific game data
+- `extract_game_data.py` - Parse units, buildings, factions from extracted packs
+- `python_pack_reader.py` - Experimental Python-only pack reader (no RPFM)
 
 ### Documentation
-- `README.md` - This file
-- `EXTRACTION_GUIDE.md` - Detailed guide for extracting and searching pack files
+- `QUICK_START.md` - ⭐ **START HERE** - Quick decision guide
+- `README.md` - This file (complete documentation)
+- `EXTRACTION_GUIDE.md` - Detailed guide for extracting pack files with RPFM
+- `RPFM_MAC_INSTALL.md` - How to install RPFM on macOS
+- `ALTERNATIVES.md` - Do you need RPFM? Alternative approaches
+- `PYTHON_EXTRACTOR_README.md` - Python-only extraction (experimental)
 - `CLAUDE.md` - Development workflow rules
 
 ## Quick Start
@@ -112,6 +118,27 @@ python3 pack_extractor.py tables
 # Generate extraction report
 python3 pack_extractor.py report
 ```
+
+### 4. Parse Game Data (Units, Buildings, Factions)
+
+Once you have extracted the pack files, parse the game data:
+
+```bash
+# Extract all game data (units, buildings, factions)
+python3 extract_game_data.py all
+
+# Or extract specific data types
+python3 extract_game_data.py units
+python3 extract_game_data.py buildings
+python3 extract_game_data.py factions
+
+# Output will be in ./output/ as JSON and CSV
+ls ./output/
+cat ./output/units.json
+open ./output/units.csv
+```
+
+This creates easy-to-use JSON and CSV files with all game data!
 
 ## Usage
 
