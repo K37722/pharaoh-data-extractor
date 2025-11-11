@@ -1,0 +1,98 @@
+{
+  "game": "Total War PHARAOH DYNASTIES",
+  "data_directory": "/TotalWarPharaohDynastiesData/data/",
+  "total_pack_files": 37,
+  "categories": {
+    "audio": {
+      "description": "Audio files for different languages and game sounds",
+      "files": [
+        "audio.pack",
+        "audio_br.pack",
+        "audio_cn.pack",
+        "audio_cz.pack",
+        "audio_en.pack",
+        "audio_fr.pack",
+        "audio_ge.pack",
+        "audio_it.pack",
+        "audio_kr.pack",
+        "audio_m.pack",
+        "audio_pl.pack",
+        "audio_sp.pack",
+        "audio_tr.pack",
+        "audio_zh.pack"
+      ]
+    },
+    "localization": {
+      "description": "Localization files for different languages",
+      "files": [
+        "local_br.pack",
+        "local_cn.pack",
+        "local_cz.pack",
+        "local_en.pack",
+        "local_fr.pack",
+        "local_ge.pack",
+        "local_it.pack",
+        "local_kr.pack",
+        "local_pl.pack",
+        "local_sp.pack",
+        "local_tr.pack",
+        "local_zh.pack"
+      ]
+    },
+    "terrain": {
+      "description": "Terrain and map data",
+      "files": [
+        "terrain.pack",
+        "terrain2.pack",
+        "terrain3.pack",
+        "terrain4.pack"
+      ]
+    },
+    "data": {
+      "description": "Core game data and database files",
+      "files": [
+        "data.pack",
+        "data_db.pack",
+        "data_special.pack"
+      ]
+    },
+    "visual": {
+      "description": "Models, units, UI, and visual assets",
+      "files": [
+        "models.pack",
+        "units.pack",
+        "ui.pack",
+        "chariot.pack",
+        "shaders.pack"
+      ]
+    },
+    "variants": {
+      "description": "Unit and model variants",
+      "files": [
+        "variants.pack",
+        "variants2.pack"
+      ]
+    },
+    "core": {
+      "description": "Core game files and boot data",
+      "files": [
+        "boot.pack",
+        "movies.pack"
+      ]
+    }
+  },
+  "languages": {
+    "br": "Brazilian Portuguese",
+    "cn": "Chinese (Simplified)",
+    "cz": "Czech",
+    "en": "English",
+    "fr": "French",
+    "ge": "German",
+    "it": "Italian",
+    "kr": "Korean",
+    "pl": "Polish",
+    "sp": "Spanish",
+    "tr": "Turkish",
+    "zh": "Chinese (Traditional)"
+  }
+}
