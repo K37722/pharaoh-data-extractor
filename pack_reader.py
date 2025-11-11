@@ -49,12 +49,12 @@ class PFH5Reader:
             raise FileNotFoundError(f"Pack file not found: {pack_path}")
 
     def read_header(self) -> Dict:
-        """Read and parse the 48-byte PFH5 header."""
+        """Read and parse the 32-byte PFH5 header."""
         with open(self.pack_path, 'rb') as f:
-            # Read 48-byte header
-            header_data = f.read(48)
+            # Read 32-byte header (8 fields x 4 bytes)
+            header_data = f.read(32)
 
-            if len(header_data) < 48:
+            if len(header_data) < 32:
                 raise ValueError("Invalid pack file: header too short")
 
             # Parse header fields
@@ -104,8 +104,8 @@ class PFH5Reader:
             return []
 
         with open(self.pack_path, 'rb') as f:
-            # Skip header (48 bytes) and extended header if present
-            header_size = 48
+            # Skip header (32 bytes) and extended header if present
+            header_size = 32
             if self.header['has_extended_header']:
                 header_size += 20
 
