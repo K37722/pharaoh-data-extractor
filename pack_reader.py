@@ -124,7 +124,15 @@ class PFH5Reader:
                 if pos >= len(file_index_data):
                     break
 
-                # Read size (4 bytes)
+                # Read null-terminated file path (comes FIRST in actual format)
+                path_end = file_index_data.find(b'\x00', pos)
+                if path_end == -1:
+                    break
+
+                file_path = file_index_data[pos:path_end].decode('utf-8', errors='ignore')
+                pos = path_end + 1
+
+                # Read size (4 bytes, comes AFTER path)
                 if pos + 4 > len(file_index_data):
                     break
                 size = struct.unpack('<I', file_index_data[pos:pos+4])[0]
@@ -137,14 +145,6 @@ class PFH5Reader:
                         break
                     timestamp = struct.unpack('<I', file_index_data[pos:pos+4])[0]
                     pos += 4
-
-                # Read null-terminated file path
-                path_end = file_index_data.find(b'\x00', pos)
-                if path_end == -1:
-                    break
-
-                file_path = file_index_data[pos:path_end].decode('utf-8', errors='ignore')
-                pos = path_end + 1
 
                 # Create entry
                 entry = PackFileEntry(file_path, size, current_offset, timestamp)
